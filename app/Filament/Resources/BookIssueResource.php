@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\StatusEnum;
 use App\Filament\Resources\BookIssueResource\Pages;
 use App\Filament\Resources\BookIssueResource\RelationManagers;
 use App\Models\BookIssue;
@@ -31,12 +32,13 @@ class BookIssueResource extends Resource
                 Forms\Components\Select::make('book_id')
                     ->relationship('book', 'title')
                     ->required(),
-                Forms\Components\DateTimePicker::make('issue_date')
+                Forms\Components\DatePicker::make('issue_date')
                     ->required(),
-                Forms\Components\DateTimePicker::make('return_date'),
-                Forms\Components\TextInput::make('status')
-                    ->required(),
-                Forms\Components\DateTimePicker::make('return_day'),
+                Forms\Components\DatePicker::make('return_date'),
+                Forms\Components\Radio::make('status')
+                    ->required()
+                    ->options(StatusEnum::class),
+                Forms\Components\DatePicker::make('return_day'),
             ]);
     }
 

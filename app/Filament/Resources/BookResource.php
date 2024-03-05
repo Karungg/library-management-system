@@ -47,16 +47,17 @@ class BookResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('category.title')
-                    ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('author.name')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('publisher_id')
-                    ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('publisher.name')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\IconColumn::make('active')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')

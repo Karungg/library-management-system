@@ -12,7 +12,7 @@ class Book extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'category_id', 'author_id', 'publisher_id', 'status'
+        'title', 'category_id', 'author_id', 'publisher_id', 'active'
     ];
 
     public function category(): BelongsTo

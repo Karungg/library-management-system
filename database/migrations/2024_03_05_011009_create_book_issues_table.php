@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('book_id')->constrained()->cascadeOnDelete();
             $table->timestamp('issue_date');
             $table->timestamp('return_date')->nullable();
-            $table->enum('status', ['issued', 'returned']);
+            $table->string('status');
             $table->timestamp('return_day')->nullable();
             $table->timestamps();
         });

@@ -2,10 +2,12 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\GenderEnum;
 use App\Filament\Resources\MemberResource\Pages;
 use App\Filament\Resources\MemberResource\RelationManagers;
 use App\Models\Member;
 use Filament\Forms;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -28,12 +30,15 @@ class MemberResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+                Radio::make('gender')
+                    ->required()
+                    ->inline()
+                    ->inlineLabel(false)
+                    ->options(GenderEnum::class),
                 Forms\Components\TextInput::make('age')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('gender')
-                    ->required()
-                    ->maxLength(255),
+                    ->maxLength(3)
+                    ->minValue(0),
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
@@ -53,16 +58,21 @@ class MemberResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('age')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('gender')
-                    ->searchable(),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('address')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

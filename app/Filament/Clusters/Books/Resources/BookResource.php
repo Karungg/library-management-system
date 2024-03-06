@@ -35,9 +35,9 @@ class BookResource extends Resource
                 Forms\Components\Select::make('author_id')
                     ->relationship('author', 'name')
                     ->required(),
-                Forms\Components\TextInput::make('publisher_id')
+                Forms\Components\Select::make('publisher_id')
                     ->required()
-                    ->numeric(),
+                    ->relationship('publisher', 'name'),
                 Forms\Components\Toggle::make('active')
                     ->required(),
             ]);
@@ -48,15 +48,14 @@ class BookResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('category.title')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('author.name')
-                    ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('publisher_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('publisher.name')
                     ->sortable(),
                 Tables\Columns\IconColumn::make('active')
                     ->boolean(),

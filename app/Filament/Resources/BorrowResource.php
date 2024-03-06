@@ -3,9 +3,9 @@
 namespace App\Filament\Resources;
 
 use App\Enums\StatusEnum;
-use App\Filament\Resources\BookIssueResource\Pages;
-use App\Filament\Resources\BookIssueResource\RelationManagers;
-use App\Models\BookIssue;
+use App\Filament\Resources\BorrowResource\Pages;
+use App\Filament\Resources\BorrowResource\RelationManagers;
+use App\Models\Borrow;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,15 +14,15 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class BookIssueResource extends Resource
+class BorrowResource extends Resource
 {
-    protected static ?string $model = BookIssue::class;
+    protected static ?string $model = Borrow::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-bookmark';
+    protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
 
     protected static ?string $navigationGroup = 'Transaction';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -32,14 +32,16 @@ class BookIssueResource extends Resource
                     ->relationship('member', 'name')
                     ->required(),
                 Forms\Components\Select::make('book_id')
-                    ->relationship('book', 'title')
-                    ->required(),
+                    ->required()
+                    ->multiple()
+                    ->relationship('books', 'title'),
                 Forms\Components\DatePicker::make('issue_date')
                     ->required(),
                 Forms\Components\DatePicker::make('return_date'),
-                Forms\Components\Radio::make('status')
+                Forms\Components\ToggleButtons::make('status')
                     ->required()
-                    ->options(StatusEnum::class),
+                    ->options(StatusEnum::class)
+                    ->inline(),
                 Forms\Components\DatePicker::make('return_day'),
             ]);
     }
@@ -51,16 +53,17 @@ class BookIssueResource extends Resource
                 Tables\Columns\TextColumn::make('member.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('book.title')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('books.title')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('issue_date')
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('return_date')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status'),
+                Tables\Columns\TextColumn::make('status')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('return_day')
                     ->dateTime()
                     ->sortable(),
@@ -77,7 +80,6 @@ class BookIssueResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -97,10 +99,9 @@ class BookIssueResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListBookIssues::route('/'),
-            'create' => Pages\CreateBookIssue::route('/create'),
-            'view' => Pages\ViewBookIssue::route('/{record}'),
-            'edit' => Pages\EditBookIssue::route('/{record}/edit'),
+            'index' => Pages\ListBorrows::route('/'),
+            'create' => Pages\CreateBorrow::route('/create'),
+            'edit' => Pages\EditBorrow::route('/{record}/edit'),
         ];
     }
 }

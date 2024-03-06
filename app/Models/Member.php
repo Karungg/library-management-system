@@ -19,8 +19,8 @@ class Member extends Model
         'gender' => GenderEnum::class
     ];
 
-    public function book_issues(): HasMany
+    public function borrows(): HasMany
     {
-        return $this->hasMany(BookIssue::class);
+        return $this->hasMany(Borrow::class);
     }
 }

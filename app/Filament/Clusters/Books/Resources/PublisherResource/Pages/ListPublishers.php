@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Filament\Resources\PublisherResource\Pages;
+namespace App\Filament\Clusters\Books\Resources\PublisherResource\Pages;
 
-use App\Filament\Resources\PublisherResource;
+use App\Filament\Clusters\Books\Resources\PublisherResource;
 use Filament\Actions;
-use Filament\Resources\Pages\ManageRecords;
+use Filament\Resources\Pages\ListRecords;
 
-class ManagePublishers extends ManageRecords
+class ListPublishers extends ListRecords
 {
     protected static string $resource = PublisherResource::class;
 

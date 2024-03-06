@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Clusters\Books\Resources;
 
-use App\Filament\Resources\PublisherResource\Pages;
-use App\Filament\Resources\PublisherResource\RelationManagers;
-use App\Models\Publisher;
+use App\Filament\Clusters\Books;
+use App\Filament\Clusters\Books\Resources\AuthorResource\Pages;
+use App\Filament\Clusters\Books\Resources\AuthorResource\RelationManagers;
+use App\Models\Author;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,13 +14,13 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class PublisherResource extends Resource
+class AuthorResource extends Resource
 {
-    protected static ?string $model = Publisher::class;
+    protected static ?string $model = Author::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-building-library';
+    protected static ?string $navigationIcon = 'heroicon-o-pencil-square';
 
-    protected static ?string $navigationGroup = 'Master Data';
+    protected static ?string $cluster = Books::class;
 
     public static function form(Form $form): Form
     {
@@ -27,8 +28,7 @@ class PublisherResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->maxLength(255)
-                    ->unique(),
+                    ->maxLength(255),
             ]);
     }
 
@@ -37,7 +37,6 @@ class PublisherResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -53,7 +52,6 @@ class PublisherResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -62,10 +60,19 @@ class PublisherResource extends Resource
             ]);
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManagePublishers::route('/'),
+            'index' => Pages\ListAuthors::route('/'),
+            'create' => Pages\CreateAuthor::route('/create'),
+            'edit' => Pages\EditAuthor::route('/{record}/edit'),
         ];
     }
 }

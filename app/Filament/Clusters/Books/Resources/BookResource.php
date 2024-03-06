@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Clusters\Books\Resources;
 
-use App\Filament\Resources\BookResource\Pages;
-use App\Filament\Resources\BookResource\RelationManagers;
+use App\Filament\Clusters\Books;
+use App\Filament\Clusters\Books\Resources\BookResource\Pages;
+use App\Filament\Clusters\Books\Resources\BookResource\RelationManagers;
 use App\Models\Book;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -19,7 +20,7 @@ class BookResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
 
-    protected static ?string $navigationGroup = 'Master Data';
+    protected static ?string $cluster = Books::class;
 
     public static function form(Form $form): Form
     {
@@ -34,9 +35,9 @@ class BookResource extends Resource
                 Forms\Components\Select::make('author_id')
                     ->relationship('author', 'name')
                     ->required(),
-                Forms\Components\Select::make('publisher_id')
-                    ->relationship('publisher', 'name')
-                    ->required(),
+                Forms\Components\TextInput::make('publisher_id')
+                    ->required()
+                    ->numeric(),
                 Forms\Components\Toggle::make('active')
                     ->required(),
             ]);
@@ -47,17 +48,16 @@ class BookResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title')
-                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('category.title')
-                    ->sortable()
-                    ->searchable(),
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('author.name')
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('publisher.name')
-                    ->sortable()
-                    ->searchable(),
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('publisher_id')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\IconColumn::make('active')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -73,7 +73,6 @@ class BookResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -95,7 +94,6 @@ class BookResource extends Resource
         return [
             'index' => Pages\ListBooks::route('/'),
             'create' => Pages\CreateBook::route('/create'),
-            'view' => Pages\ViewBook::route('/{record}'),
             'edit' => Pages\EditBook::route('/{record}/edit'),
         ];
     }

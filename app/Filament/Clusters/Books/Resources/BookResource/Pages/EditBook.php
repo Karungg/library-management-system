@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\BookResource\Pages;
+namespace App\Filament\Clusters\Books\Resources\BookResource\Pages;
 
-use App\Filament\Resources\BookResource;
+use App\Filament\Clusters\Books\Resources\BookResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
@@ -13,7 +13,6 @@ class EditBook extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\ViewAction::make(),
             Actions\DeleteAction::make(),
         ];
     }

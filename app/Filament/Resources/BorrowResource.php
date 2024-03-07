@@ -6,6 +6,8 @@ use App\Enums\StatusEnum;
 use App\Filament\Resources\BorrowResource\Pages;
 use App\Filament\Resources\BorrowResource\RelationManagers;
 use App\Models\Borrow;
+use App\Models\Setting;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -44,6 +46,12 @@ class BorrowResource extends Resource
                     ->multiple()
                     ->relationship('books', 'title')
                     ->maxItems(3),
+                Forms\Components\TextInput::make('borrow_for')
+                    ->numeric()
+                    ->required(),
+                Forms\Components\TextInput::make('fine')
+                    ->numeric()
+                    ->required(),
             ]);
     }
 
@@ -70,6 +78,15 @@ class BorrowResource extends Resource
                 Tables\Columns\TextColumn::make('return_day')
                     ->date()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('fine')
+                    ->sortable()
+                    ->default(0)
+                    ->getStateUsing(function (Borrow $record): float {
+                        $return_date = Carbon::parse($record->return_date);
+                        $return_day = $record->return_day ? Carbon::parse($record->return_day) : null;
+                        $diff = $return_day ? $return_date->diffInDays($return_day) : 0;
+                        return $diff * $record->fine;
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

@@ -9,5 +9,7 @@ class Setting extends Model
 {
     use HasFactory;
 
+    protected $table = 'settings';
+
     protected $fillable = ['return_days', 'fine'];
 }

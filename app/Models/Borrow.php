@@ -12,7 +12,7 @@ class Borrow extends Model
     use HasFactory;
 
     protected $fillable = [
-        'member_id', 'issue_date', 'return_date', 'status', 'return_day'
+        'member_id', 'issue_date', 'return_date', 'status', 'return_day', 'borrow_for', 'fine'
     ];
 
     public function member(): BelongsTo

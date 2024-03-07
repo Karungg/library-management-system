@@ -31,10 +31,6 @@ class BorrowResource extends Resource
                 Forms\Components\Select::make('member_id')
                     ->relationship('member', 'name')
                     ->required(),
-                Forms\Components\Select::make('book_id')
-                    ->required()
-                    ->multiple()
-                    ->relationship('books', 'title'),
                 Forms\Components\DatePicker::make('issue_date')
                     ->required(),
                 Forms\Components\DatePicker::make('return_date'),
@@ -43,6 +39,11 @@ class BorrowResource extends Resource
                     ->options(StatusEnum::class)
                     ->inline(),
                 Forms\Components\DatePicker::make('return_day'),
+                Forms\Components\Select::make('book_id')
+                    ->required()
+                    ->multiple()
+                    ->relationship('books', 'title')
+                    ->maxItems(3),
             ]);
     }
 
@@ -55,17 +56,19 @@ class BorrowResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('books.title')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('issue_date')
-                    ->dateTime()
+                    ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('return_date')
-                    ->dateTime()
+                    ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
-                    ->searchable(),
+                    ->searchable()
+                    ->badge(),
                 Tables\Columns\TextColumn::make('return_day')
-                    ->dateTime()
+                    ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

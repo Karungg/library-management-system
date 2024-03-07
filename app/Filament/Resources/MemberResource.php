@@ -49,7 +49,7 @@ class MemberResource extends Resource
                     ->tel()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('address')
+                Forms\Components\Textarea::make('address')
                     ->required()
                     ->maxLength(255),
             ]);

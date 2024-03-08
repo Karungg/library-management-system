@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Enums\StatusEnum;
 use App\Filament\Resources\BorrowResource\Pages;
 use App\Filament\Resources\BorrowResource\RelationManagers;
+use App\Models\Book;
 use App\Models\Borrow;
 use App\Models\Setting;
 use Carbon\Carbon;

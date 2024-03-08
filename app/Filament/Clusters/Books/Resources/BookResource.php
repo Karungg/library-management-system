@@ -6,6 +6,7 @@ use App\Filament\Clusters\Books;
 use App\Filament\Clusters\Books\Resources\BookResource\Pages;
 use App\Filament\Clusters\Books\Resources\BookResource\RelationManagers;
 use App\Models\Book;
+use App\Models\Scopes\ActiveScope;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -98,5 +99,10 @@ class BookResource extends Resource
             'create' => Pages\CreateBook::route('/create'),
             'edit' => Pages\EditBook::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->withoutGlobalScopes([ActiveScope::class]);
     }
 }

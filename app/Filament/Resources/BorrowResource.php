@@ -11,6 +11,7 @@ use App\Models\Setting;
 use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -34,25 +35,26 @@ class BorrowResource extends Resource
                 Forms\Components\Select::make('member_id')
                     ->relationship('member', 'name')
                     ->required(),
-                Forms\Components\DatePicker::make('issue_date')
-                    ->required(),
-                Forms\Components\DatePicker::make('return_date'),
-                Forms\Components\ToggleButtons::make('status')
-                    ->required()
-                    ->options(StatusEnum::class)
-                    ->inline(),
-                Forms\Components\DatePicker::make('return_day'),
                 Forms\Components\Select::make('book_id')
                     ->required()
                     ->multiple()
                     ->relationship('books', 'title')
                     ->maxItems(3),
-                Forms\Components\TextInput::make('borrow_for')
-                    ->numeric()
-                    ->required(),
+                Forms\Components\DatePicker::make('return_date')
+                    ->required()
+                    ->minDate(now()),
+                Forms\Components\DatePicker::make('return_day')
+                    ->minDate(function (Get $get) {
+                        return $get('created_at');
+                    }),
                 Forms\Components\TextInput::make('fine')
                     ->numeric()
-                    ->required(),
+                    ->required()
+                    ->label('Fine Per Day'),
+                Forms\Components\ToggleButtons::make('status')
+                    ->required()
+                    ->options(StatusEnum::class)
+                    ->inline(),
             ]);
     }
 
@@ -60,6 +62,10 @@ class BorrowResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->label('Borrow At'),
                 Tables\Columns\TextColumn::make('member.name')
                     ->numeric()
                     ->sortable(),
@@ -67,15 +73,9 @@ class BorrowResource extends Resource
                     ->sortable()
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('issue_date')
-                    ->date()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('return_date')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status')
-                    ->searchable()
-                    ->badge(),
                 Tables\Columns\TextColumn::make('return_day')
                     ->date()
                     ->sortable(),
@@ -85,13 +85,17 @@ class BorrowResource extends Resource
                     ->getStateUsing(function (Borrow $record): float {
                         $return_date = Carbon::parse($record->return_date);
                         $return_day = $record->return_day ? Carbon::parse($record->return_day) : null;
+
+                        if ($return_date > $return_day) {
+                            return 0;
+                        }
+
                         $diff = $return_day ? $return_date->diffInDays($return_day) : 0;
                         return $diff * $record->fine;
                     }),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('status')
+                    ->searchable()
+                    ->badge(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()

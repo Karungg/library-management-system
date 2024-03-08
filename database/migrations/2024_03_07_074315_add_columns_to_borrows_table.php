@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('borrows', function (Blueprint $table) {
-            $table->integer('borrow_for');
             $table->bigInteger('fine');
         });
     }
@@ -23,7 +22,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('borrows', function (Blueprint $table) {
-            $table->dropIfExists('borrow_for');
             $table->dropIfExists('fine');
         });
     }

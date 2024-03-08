@@ -9,13 +9,13 @@ use Filament\Support\Contracts\HasLabel;
 
 enum StatusEnum: string implements HasLabel, HasIcon, HasColor
 {
-    case Issued = "Issued";
+    case Borrowed = "Borrowed";
     case Returned = "Returned";
 
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::Issued => "Issued",
+            self::Borrowed => "Borrowed",
             self::Returned => "Returned"
         };
     }
@@ -23,7 +23,7 @@ enum StatusEnum: string implements HasLabel, HasIcon, HasColor
     public function getIcon(): ?string
     {
         return match ($this) {
-            self::Issued => "heroicon-m-no-symbol",
+            self::Borrowed => "heroicon-m-no-symbol",
             self::Returned => "heroicon-m-check-circle"
         };
     }
@@ -31,7 +31,7 @@ enum StatusEnum: string implements HasLabel, HasIcon, HasColor
     public function getColor(): string|array|null
     {
         return match ($this) {
-            self::Issued => "danger",
+            self::Borrowed => "danger",
             self::Returned => "success"
         };
     }

@@ -94,7 +94,6 @@ class BorrowResource extends Resource
                         return $diff * $record->fine;
                     }),
                 Tables\Columns\TextColumn::make('status')
-                    ->searchable()
                     ->badge(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
@@ -128,5 +127,10 @@ class BorrowResource extends Resource
             'create' => Pages\CreateBorrow::route('/create'),
             'edit' => Pages\EditBorrow::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }

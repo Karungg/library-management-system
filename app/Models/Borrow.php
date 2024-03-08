@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\StatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,6 +14,10 @@ class Borrow extends Model
 
     protected $fillable = [
         'member_id', 'return_date', 'status', 'return_day', 'fine'
+    ];
+
+    protected $casts = [
+        'status' => StatusEnum::class
     ];
 
     public function member(): BelongsTo

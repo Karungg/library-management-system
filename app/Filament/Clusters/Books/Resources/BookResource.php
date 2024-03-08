@@ -23,6 +23,8 @@ class BookResource extends Resource
 
     protected static ?string $cluster = Books::class;
 
+    protected static ?int $navigationSort = 0;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -104,5 +106,10 @@ class BookResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->withoutGlobalScopes([ActiveScope::class]);
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }

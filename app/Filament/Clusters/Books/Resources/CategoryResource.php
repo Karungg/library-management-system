@@ -24,6 +24,8 @@ class CategoryResource extends Resource
 
     protected static ?string $cluster = Books::class;
 
+    protected static ?int $navigationSort = 1;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -35,7 +37,8 @@ class CategoryResource extends Resource
                     ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
                 Forms\Components\TextInput::make('slug')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->readOnly(),
             ]);
     }
 

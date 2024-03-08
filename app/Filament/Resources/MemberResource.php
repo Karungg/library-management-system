@@ -89,7 +89,6 @@ class MemberResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -111,7 +110,6 @@ class MemberResource extends Resource
         return [
             'index' => Pages\ListMembers::route('/'),
             'create' => Pages\CreateMember::route('/create'),
-            'view' => Pages\ViewMember::route('/{record}'),
             'edit' => Pages\EditMember::route('/{record}/edit'),
         ];
     }

@@ -18,22 +18,22 @@ class StatsOverview extends BaseWidget
         return [
             Stat::make('Authors Listed', Author::count())
                 ->icon('heroicon-m-pencil-square')
-                ->url('admin/books/authors'),
+                ->url('books/authors'),
             Stat::make('Publishers Listed', Publisher::count())
                 ->icon('heroicon-m-building-library')
-                ->url('admin/books/publishers'),
+                ->url('books/publishers'),
             Stat::make('Categories Listed', Category::count())
                 ->icon('heroicon-m-tag')
-                ->url('admin/books/categories'),
+                ->url('books/categories'),
             Stat::make('Books Listed', Book::count())
                 ->icon('heroicon-m-book-open')
-                ->url('admin/books/books'),
+                ->url('books/books'),
             Stat::make('Members Listed', Member::count())
                 ->icon('heroicon-m-user')
-                ->url('admin/members'),
+                ->url('members'),
             Stat::make('Borrows Listed', Borrow::count())
                 ->icon('heroicon-m-shopping-cart')
-                ->url('admin/borrows'),
+                ->url('borrows'),
         ];
     }
 }
